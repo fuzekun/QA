@@ -19,7 +19,7 @@ public class DataController {
     // 统计页面
     @RequestMapping(path = "/data", method = {RequestMethod.GET, RequestMethod.POST})
     public String getDataPage() {
-        return "/site/admin/data";
+        return "site/admin/data";
     }
 
     // 统计网站UV

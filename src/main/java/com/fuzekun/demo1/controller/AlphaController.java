@@ -20,6 +20,7 @@ import java.util.*;
 @RequestMapping("/alpha")
 public class AlphaController {
 
+
     @Autowired
     private AlphaService alphaService;
 
@@ -29,10 +30,20 @@ public class AlphaController {
         return "Hello Spring Boot.";
     }
 
-    @RequestMapping("/data")
+    @RequestMapping("data")
     @ResponseBody
     public String getData() {
         return alphaService.find();
+    }
+
+    @RequestMapping("/postList")
+    public String List() {
+        return "site/my-post";
+    }
+
+    @RequestMapping("/rely")
+    public String list() {
+        return "site/my-reply";
     }
 
     @RequestMapping("/http")

@@ -58,7 +58,7 @@ public class FollowController implements CommunityConstant {
         return CommunityUtil.getJSONString(0, "已关注!");
     }
 
-    @RequestMapping(path = "/unfollow", method = RequestMethod.POST)
+    @RequestMapping(path = "unfollow", method = RequestMethod.POST)
     @ResponseBody
     public String unfollow(int entityType, int entityId) {
         User user = hostHolder.getUser();
@@ -96,7 +96,7 @@ public class FollowController implements CommunityConstant {
         // 5. 直接返回就行了
         model.addAttribute("users", userList);
 
-        return "/site/followee";
+        return "site/followee";
     }
 
     @RequestMapping(path = "/followers/{userId}", method = RequestMethod.GET)
@@ -120,7 +120,7 @@ public class FollowController implements CommunityConstant {
         }
         model.addAttribute("users", userList);
 
-        return "/site/follower";
+        return "site/follower";
     }
 
     private boolean hasFollowed(int userId) {

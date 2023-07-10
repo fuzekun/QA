@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,7 +11,7 @@
 <body>
 	<div class="nk-container">
 		<!-- 头部 -->
-		<header class="bg-dark sticky-top">
+		<header class="bg-dark sticky-top"  th:replace="index::header">
 			<div class="container">
 				<!-- 导航 -->
 				<nav class="navbar navbar-expand-lg navbar-dark">
@@ -65,13 +65,13 @@
 				<div class="position-relative">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
-							<a class="nav-link" href="profile.html">个人信息</a>
+							<a class="nav-link" th:href="@{/user/profile/1}">个人信息</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="my-post.html">我的帖子</a>
+							<a class="nav-link active" th:href="@{/alpha/postList}">我的帖子</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link active" href="my-reply.html">我的回复</a>
+							<a class="nav-link" th:href="@{/alpha/rely}">我的回复</a>
 						</li>
 					</ul>
 					<a href="profile.html" class="text-muted position-absolute rt-0">返回个人主页&gt;</a>
@@ -85,7 +85,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -96,7 +96,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -107,7 +107,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -118,7 +118,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -129,7 +129,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -140,7 +140,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -151,7 +151,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -162,7 +162,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -173,7 +173,7 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
@@ -184,12 +184,12 @@
 								<a href="#" class="text-info">备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="mt-1 font-size-14">
-								顶顶顶!								
+								顶顶顶!
 							</div>
 							<div class="text-right font-size-12 text-muted">
 								回复于 <b>2019-04-15 10:10:10</b>
 							</div>
-						</li>																																																
+						</li>
 					</ul>
 					<!-- 分页 -->
 					<nav class="mt-5">
@@ -204,8 +204,8 @@
 							<li class="page-item"><a class="page-link" href="#">下一页</a></li>
 							<li class="page-item"><a class="page-link" href="#">末页</a></li>
 						</ul>
-					</nav>					
-				</div>				
+					</nav>
+				</div>
 			</div>
 		</div>
 

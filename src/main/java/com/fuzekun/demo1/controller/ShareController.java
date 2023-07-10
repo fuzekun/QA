@@ -68,7 +68,7 @@ public class ShareController implements CommunityConstant {
 
     // 废弃
     // 获取长图
-    @RequestMapping(path = "/share/image/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(path = "share/image/{fileName}", method = RequestMethod.GET)
     public void getShareImage(@PathVariable("fileName") String fileName, HttpServletResponse response) {
         if (StringUtils.isBlank(fileName)) {
             throw new IllegalArgumentException("文件名不能为空!");

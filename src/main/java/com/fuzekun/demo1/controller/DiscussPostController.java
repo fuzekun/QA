@@ -60,7 +60,7 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
         discussPostService.addDiscussPost(post);
-//        System.out.println("用户帖子id为" + post.getId());
+        System.out.println("用户帖子id为" + post.getId());
 
         // 触发发帖事件
         Event event = new Event()
@@ -159,7 +159,7 @@ public class DiscussPostController implements CommunityConstant {
 
         model.addAttribute("comments", commentVoList);
 
-        return "/site/discuss-detail";
+        return "site/discuss-detail";
     }
 
 
