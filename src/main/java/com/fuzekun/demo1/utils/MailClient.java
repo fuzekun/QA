@@ -1,6 +1,9 @@
 package com.fuzekun.demo1.utils;
 
 
+import com.fuzekun.demo1.event.EventConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,6 +27,7 @@ import java.util.Map;
  */
 @Component
 public class MailClient {
+    private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
 
     @Autowired
@@ -61,15 +65,18 @@ public class MailClient {
         message.setSubject(subject);
         message.setFrom(from);
         message.setTo(to);
+        logger.info("sending Email....");
         if (cc != null) {
             message.setCc(cc);
         }
         if (bcc != null) {
             message.setBcc(bcc);
         }
+        logger.info("prepared email....");
         message.setSentDate(new Date());
         message.setText(text);
         javaMailSender.send(message);
+        logger.info("finished SendEmail!");
     }
 
     /**
@@ -169,8 +176,10 @@ public class MailClient {
                 context.setVariable(k, v);
             });
         }
+        logger.info("prepared email....");
         String process = templateEngine.process(templatePath, context);
         helper.setText(process, true);
+        logger.info("mail prepared finished");
         javaMailSender.send(mimeMessage);
     }
 }

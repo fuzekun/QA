@@ -1,22 +1,26 @@
 package com.fuzekun.demo1.service;
 
+import com.fuzekun.demo1.entity.community.Event;
 import com.fuzekun.demo1.entity.community.LoginTicket;
+import com.fuzekun.demo1.entity.community.SendMailEvent;
 import com.fuzekun.demo1.entity.community.User;
+import com.fuzekun.demo1.event.EventConsumer;
+import com.fuzekun.demo1.event.EventProducer;
 import com.fuzekun.demo1.mapper.community.LoginTicketMapper;
 import com.fuzekun.demo1.mapper.community.UserMapper2;
-import com.fuzekun.demo1.mapper.primary.UserMapper;
 import com.fuzekun.demo1.utils.CommunityConstant;
 import com.fuzekun.demo1.utils.CommunityUtil;
 import com.fuzekun.demo1.utils.MailClient;
 import com.fuzekun.demo1.utils.RedisKeyUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.*;
@@ -24,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService implements CommunityConstant {
+    private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
     @Autowired
     private UserMapper2 userMapper;
@@ -45,6 +50,8 @@ public class UserService implements CommunityConstant {
     private RedisTemplate redisTemplate;
 
 
+    @Autowired
+    private EventProducer eventProducer;
 
     public User findById(int id) {
         User user = getCache(id);
@@ -116,7 +123,7 @@ public class UserService implements CommunityConstant {
         // 激活邮件
         Context context = new Context();
         context.setVariable("email", user.getEmail());
-        // http://localhost:8080/community/activation/101/code
+        // http://localhost:8080/activation/101/code
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
 //        context.setVariable("url", url);
 //        String content = templateEngine.process("/mail/activation", context);
@@ -125,10 +132,17 @@ public class UserService implements CommunityConstant {
         htmlV.putIfAbsent("url", url);
         htmlV.putIfAbsent("headerUrl", user.getHeaderUrl());
         htmlV.putIfAbsent("username", user.getUsername());
-        try {
-            mailClient.sendThymeleafMail("激活账户", user.getEmail(), htmlV, htmlPath);
-        }catch (Exception e) {
-        }
+
+        logger.info("用户注册成功，等待验证！");
+
+        // 封装邮件发送事件
+        SendMailEvent event = new SendMailEvent(TOPIC_SENDMAIL, user.getEmail(), htmlPath, htmlV);
+        eventProducer.fireEvent(event);
+//        try {
+//            mailClient.sendThymeleafMail("激活账户", user.getEmail(), htmlV, htmlPath);
+//        }catch (Exception e) {
+//        }
+        logger.info("邮箱消息封装成功!");
 
         return map;
     }

@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.fuzekun.demo1.entity.community.DiscussPost;
 import com.fuzekun.demo1.entity.community.Event;
 import com.fuzekun.demo1.entity.community.Message;
+import com.fuzekun.demo1.entity.community.SendMailEvent;
 import com.fuzekun.demo1.service.DiscussPostService;
 import com.fuzekun.demo1.service.ElasticsearchService;
 import com.fuzekun.demo1.service.MessageService;
 import com.fuzekun.demo1.utils.CommunityConstant;
 import com.fuzekun.demo1.utils.CommunityUtil;
+import com.fuzekun.demo1.utils.MailClient;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -62,7 +64,35 @@ public class EventConsumer implements CommunityConstant {
     private String shareBucketName;
 
     @Autowired
+    private MailClient mailClient;
+
+    @Autowired
     private ThreadPoolTaskScheduler taskScheduler;
+
+    // 消费发送邮件事件
+    @KafkaListener(topics = {TOPIC_SENDMAIL})
+    public void handlerSendMail(ConsumerRecord record) {
+        if (record == null || record.value() == null) {
+            logger.error("消息的内容为空!");
+            return;
+        }
+        SendMailEvent event = JSONObject.parseObject(record.value().toString(), SendMailEvent.class);
+        if (event == null) {
+            logger.error("消息格式错误!");
+            return;
+        }
+        try {
+            logger.info("consum sendMail Message");
+            mailClient.sendThymeleafMail("激活账户", event.getUserMail(), event.getHtmlV(), event.getHtmlPath());
+//            mailClient.sendTextMail("激活账户", event.getUserMail(), (String)event.getHtmlV().get("url"));
+            logger.info("have sent mail");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+//        logger.info("注册邮箱发送成功!");
+        logger.info("have sent mail!");
+    }
+
 
     @KafkaListener(topics = {TOPIC_COMMENT, TOPIC_LIKE, TOPIC_FOLLOW})
     public void handleCommentMessage(ConsumerRecord record) {

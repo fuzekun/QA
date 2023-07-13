@@ -74,6 +74,12 @@ public interface CommunityConstant {
     String TOPIC_SHARE = "share";
 
     /**
+     *  主题发送邮件
+     * */
+    String TOPIC_SENDMAIL = "sendMail";
+
+
+    /**
      * 系统用户ID
      */
     int SYSTEM_USER_ID = 1;
@@ -93,6 +99,7 @@ public interface CommunityConstant {
      * 权限: 版主
      */
     String AUTHORITY_MODERATOR = "moderator";
+
 
 
 
