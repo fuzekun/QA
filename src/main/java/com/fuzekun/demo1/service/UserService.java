@@ -121,7 +121,7 @@ public class UserService implements CommunityConstant {
 //        context.setVariable("url", url);
 //        String content = templateEngine.process("/mail/activation", context);
         HashMap<String, Object>htmlV = new HashMap<>();
-        String htmlPath = "/mail/activation";
+        String htmlPath = "mail/activation";
         htmlV.putIfAbsent("url", url);
         htmlV.putIfAbsent("headerUrl", user.getHeaderUrl());
         htmlV.putIfAbsent("username", user.getUsername());

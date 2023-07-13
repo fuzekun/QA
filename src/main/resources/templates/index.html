@@ -13,7 +13,7 @@
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
 	<title>问答系统-首页</title>
 </head>
-<body>	
+<body>
 	<div class="nk-container">
 		<!-- 头部 -->
 		<header class="bg-dark sticky-top" th:fragment="header">
@@ -120,7 +120,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- 帖子列表 -->
 				<ul class="list-unstyled">
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
@@ -141,7 +141,7 @@
 									<li class="d-inline ml-2">回帖 <span th:text="${map.post.commentCount}">7</span></li>
 								</ul>
 							</div>
-						</div>						
+						</div>
 					</li>
 				</ul>
 				<!-- 分页 -->
@@ -167,12 +167,12 @@
 		</div>
 
 		<!-- 尾部 -->
-		<footer class="bg-dark">
+		<footer class="bg-dark" th:fragment="footer">
 			<div class="container">
 				<div class="row">
 					<!-- 二维码 -->
 					<div class="col-4 qrcode">
-						<img src="https://uploadfiles.nowcoder.com/app/app_download.png" class="img-thumbnail" style="width:136px;" />
+						<img src="http://qiniu.fuzekun.top/image-20230713163923900.png" class="img-thumbnail" style="width:136px;" />
 					</div>
 					<!-- 公司信息 -->
 					<div class="col-8 detail-info">
@@ -207,13 +207,13 @@
 							<div class="col">
 								<ul class="nav btn-group-vertical company-info">
 									<li class="nav-item text-white-50">
-										公司地址：北京你在哪公司
+										公司地址：北京PQA公司
 									</li>
 									<li class="nav-item text-white-50">
-										联系方式：88888888(电话)&nbsp;&nbsp;&nbsp;&nbsp;admin@fuzekun.com
+										联系方式：88888888(电话)&nbsp;&nbsp;&nbsp@www.PQA.com
 									</li>
 									<li class="nav-item text-white-50">
-										黑方科技©2023 All rights reserved
+										PQA科技©2023
 									</li>
 									<li class="nav-item text-white-50">
 										京ICP备14055008号-4 &nbsp;&nbsp;&nbsp;&nbsp;

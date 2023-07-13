@@ -62,7 +62,7 @@ public class LoginController implements CommunityConstant {
         if (map == null || map.isEmpty()) {
             model.addAttribute("msg", "注册成功,我们已经向您的邮箱发送了一封激活邮件,请尽快激活!");
             model.addAttribute("target", "/index");
-            return "/site/operate-result";
+            return "site/operate-result";
         } else {
             model.addAttribute("usernameMsg", map.get("usernameMsg"));
             model.addAttribute("passwordMsg", map.get("passwordMsg"));
