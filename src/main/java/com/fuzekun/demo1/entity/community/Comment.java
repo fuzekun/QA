@@ -12,6 +12,15 @@ public class Comment {
     private String content;
     private int status;
     private Date createTime;
+    private String postTitle;           // 对应的post的title
+
+    public String getPostTitle() {
+        return postTitle;
+    }
+
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
+    }
 
     public int getId() {
         return id;

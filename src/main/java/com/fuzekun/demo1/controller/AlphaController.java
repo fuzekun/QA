@@ -1,7 +1,14 @@
 package com.fuzekun.demo1.controller;
 
-import com.fuzekun.demo1.service.AlphaService;
+import com.fuzekun.demo1.entity.community.Comment;
+import com.fuzekun.demo1.entity.community.DiscussPost;
+import com.fuzekun.demo1.entity.community.Page;
+import com.fuzekun.demo1.entity.community.User;
+import com.fuzekun.demo1.service.*;
+import com.fuzekun.demo1.utils.CommunityConstant;
 import com.fuzekun.demo1.utils.CommunityUtil;
+
+import com.fuzekun.demo1.utils.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +31,28 @@ public class AlphaController {
     @Autowired
     private AlphaService alphaService;
 
+    @Autowired
+    private HostHolder hostHolder;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private LikeService likeService;
+
+    @Autowired
+    private UserService userService;
+
+
     @RequestMapping("/hello")
     @ResponseBody
     public String sayHello() {
         return "Hello Spring Boot.";
     }
+
 
     @RequestMapping("data")
     @ResponseBody
@@ -36,15 +60,101 @@ public class AlphaController {
         return alphaService.find();
     }
 
-    @RequestMapping("/postList")
-    public String List() {
+    @RequestMapping("/postList/{userId}")
+    public String List(@PathVariable("userId") int userId, Model model, Page page, @RequestParam(name = "orderMode", defaultValue = "0") int orderMode) {
+        // 获取贴子列表和贴子数目
+        page.setRows(discussPostService.findDiscussPostRows(userId));
+        String path = "/alpha/postList/" + userId + "?orderMode=" + orderMode;
+        page.setPath(path);
+
+        List<DiscussPost> list = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit(), orderMode); // 这里也使用了缓存
+        List<Map<String, Object>>discussPosts = new ArrayList<>();
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+
+                long likeCount = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_POST, post.getId());   // 这里从redis中获取
+                map.put("likeCount", likeCount);
+
+                discussPosts.add(map);
+            }
+        }
+        model.addAttribute("discussPosts", discussPosts);
+        model.addAttribute("orderMode", orderMode);
+        model.addAttribute("cnt", discussPostService.findDiscussPostRows(userId));
+        model.addAttribute("userId", userId);
+
         return "site/my-post";
     }
 
-    @RequestMapping("/rely")
-    public String list() {
+    @RequestMapping("/rely/{userId}")
+    public String list(@PathVariable("userId") int userId, Model model, Page page, @RequestParam(name = "orderMode", defaultValue = "0") int orderMode) {
+        // 所有贴子评论
+        page.setRows(commentService.findUserAllCommentCount(userId));
+
+        // 所有评论评论
+
+        String path = "/alpha/rely/" + userId;
+        page.setPath(path);
+        int cnt = commentService.findUserAllCommentCount(userId);
+
+        List<Comment> list2 = commentService.findUserAllComment(userId, page.getOffset(), page.getLimit());
+        List<Comment> list = new ArrayList<>();
+
+        // 帖子和评论不同对待
+        int len = list2.size();
+        for (int i = 0; i < len; i++) {
+            Comment comment = list2.get(i);
+            // 如果是评论的回复找到贴子的id
+            if (comment.getEntityType() == CommunityConstant.ENTITY_TYPE_COMMENT) {
+                int postId = commentService.findCommentById(comment.getEntityId()).getEntityId();
+                comment.setEntityId(postId);
+                comment.setPostTitle(discussPostService.findDiscussPostById(postId).getTitle());
+            }
+            else {
+                // 如果是贴子评论，直接评论就行了
+                comment.setPostTitle(discussPostService.findDiscussPostById(comment.getEntityId()).getTitle());
+            }
+            list.add(comment);
+        }
+
+        List<Map<String, Object>>comments = new ArrayList<>();
+        // 根据不同类型找到点赞数量
+        for (Comment comment : list) {
+            Map<String, Object>mp = new HashMap<>();
+            long likeCnt = likeService.findEntityLikeCount(CommunityConstant.ENTITY_TYPE_COMMENT, comment.getId());
+            mp.put("likeCount", likeCnt);
+            mp.put("comment", comment);
+            comments.add(mp);
+        }
+
+        // 封装
+        model.addAttribute("comments", comments);
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("userId", userId);
+        model.addAttribute("orderMod", orderMode);
+
         return "site/my-reply";
     }
+
+    /**
+     * 根据评论的类型，判断redis中实体的类型
+     * */
+//    private int getType(int type) {
+//        if (type == 0) {
+//            return 0;
+//        }
+//        if (type == 1) {
+//            return 1;
+//        }
+//        return 2;
+//    }
+
+//    @RequestMapping("/rely")
+//    public String rely() {
+//        return "site/my-reply";
+//    }
 
     @RequestMapping("/http")
     public void http(HttpServletRequest request, HttpServletResponse response) {
