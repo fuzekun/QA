@@ -34,6 +34,12 @@
 							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
 								<a class="nav-link position-relative" th:href="@{/letter/list}">消息<span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}">12</span></a>
 							</li>
+							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
+								<a class="nav-link position-relative" th:href="@{/alpha/activity}">活动列表<span class="badge badge-danger" ></span></a>
+							</li>
+							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
+								<a class="nav-link position-relative" th:href="@{/alpha/lottery}">抽奖<span class="badge badge-danger"></span> </a>
+							</li>
 							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
 								<a class="nav-link" th:href="@{/register}">注册</a>
 							</li>

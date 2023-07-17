@@ -138,23 +138,15 @@ public class AlphaController {
         return "site/my-reply";
     }
 
-    /**
-     * 根据评论的类型，判断redis中实体的类型
-     * */
-//    private int getType(int type) {
-//        if (type == 0) {
-//            return 0;
-//        }
-//        if (type == 1) {
-//            return 1;
-//        }
-//        return 2;
-//    }
+    @RequestMapping("/activity")
+    public String activity() {
+        return "site/acti";
+    }
 
-//    @RequestMapping("/rely")
-//    public String rely() {
-//        return "site/my-reply";
-//    }
+    @RequestMapping("/lottery")
+    public String lottery() {
+        return "site/lottery";
+    }
 
     @RequestMapping("/http")
     public void http(HttpServletRequest request, HttpServletResponse response) {
