@@ -3,8 +3,11 @@
 // let contextPath = localObj.pathname.split("/")[1];
 // let basePath = localObj.protocol+"//"+localObj.host+"/"+contextPath;
 const CONTEXT_PATH = "";
-const domain = "http://771050pe10.zicp.fun";
-const port = "54385";
+// 将本地的的8082端口映射到服务器的7003端口
+const domain = "http://fuzekun.top:7003";
+// const port = "";
+// const domain = "http://localhost:8082";
+// const port = "8082";
 window.alert = function(message) {
 	if(!$(".alert-box").length) {
 		$("body").append(

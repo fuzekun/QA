@@ -1,4 +1,5 @@
-
+var url = domain + "/api/prize/queryPrizeList";
+var url2 = domain + "/api/prize/doDrawPrize";
 var prizes = null;
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
@@ -10,7 +11,10 @@ function getRandomColor() {
 }
 // 请求奖品列表，进行轮盘渲染
 $.ajax({
-    url: domain + ":" + port + "/api/prize/queryPrizeList",
+    url: url,
+    hearders: {
+        'ngrok-skip-browser-warning': false
+    },
     // url: 'http://localhost:8082/api/prize/queryPrizeList',
     type: 'GET',
     xhrFields: {
@@ -41,7 +45,10 @@ $.ajax({
     // 使用定时器模拟接口
     // 假设后端返回的中奖索引是0
     $.ajax({
-        url: domain + ":" + port + "/api/prize/doDrawPrize",
+        url: url2,
+        hearders: {
+            'ngrok-skip-browser-warning': false
+        },
         // url: 'http://localhost:8082/api/prize/doDrawPrize',
         type: 'GET',
         data: {
